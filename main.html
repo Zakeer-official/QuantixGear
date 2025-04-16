@@ -1,0 +1,788 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RoboMart - Robotics Components Store</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #2874f0;
+            --secondary: #fb641b;
+            --dark: #212121;
+            --light: #f5f5f5;
+            --gray: #878787;
+            --success: #388e3c;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: var(--light);
+            color: var(--dark);
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+        
+        /* Enhanced Header */
+        .top-bar {
+            background-color: var(--dark);
+            color: white;
+            padding: 8px 0;
+            font-size: 12px;
+        }
+        
+        .top-bar-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .top-links a {
+            color: white;
+            text-decoration: none;
+            margin-left: 15px;
+        }
+        
+        /* Main Header */
+        header {
+            background-color: var(--primary);
+            color: white;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        
+        .header-container {
+            display: flex;
+            align-items: center;
+            padding: 12px 0;
+        }
+        
+        .logo {
+            font-size: 22px;
+            font-weight: bold;
+            margin-right: 30px;
+        }
+        
+        .search-bar {
+            flex-grow: 1;
+            display: flex;
+            margin-right: 20px;
+            background: white;
+            border-radius: 2px;
+            overflow: hidden;
+            height: 36px;
+        }
+        
+        .search-bar input {
+            flex-grow: 1;
+            padding: 0 15px;
+            border: none;
+            outline: none;
+            font-size: 14px;
+        }
+        
+        .search-bar button {
+            background-color: var(--primary);
+            border: none;
+            padding: 0 20px;
+            color: white;
+            cursor: pointer;
+        }
+        
+        .header-actions {
+            display: flex;
+            align-items: center;
+        }
+        
+        .action-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-left: 20px;
+            color: white;
+            text-decoration: none;
+            font-size: 12px;
+        }
+        
+        .action-item i {
+            font-size: 18px;
+            margin-bottom: 2px;
+        }
+        
+        /* Mega Menu */
+        .mega-menu {
+            background-color: white;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            display: none;
+            position: absolute;
+            width: 100%;
+            left: 0;
+            padding: 20px 0;
+        }
+        
+        .mega-menu.active {
+            display: block;
+        }
+        
+        .menu-columns {
+            display: flex;
+        }
+        
+        .menu-column {
+            flex: 1;
+            padding: 0 15px;
+        }
+        
+        .menu-column h3 {
+            color: var(--primary);
+            margin-bottom: 15px;
+            font-size: 14px;
+        }
+        
+        .menu-column ul {
+            list-style: none;
+        }
+        
+        .menu-column ul li {
+            margin-bottom: 8px;
+        }
+        
+        .menu-column ul li a {
+            color: var(--dark);
+            text-decoration: none;
+            font-size: 13px;
+        }
+        
+        /* Hero Banner */
+        .hero-banner {
+            height: 400px;
+            background-color: #eee;
+            margin: 15px auto;
+            border-radius: 4px;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .hero-banner img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        /* Categories Section */
+        .categories-section {
+            margin: 30px 0;
+        }
+        
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .section-title {
+            font-size: 20px;
+            font-weight: 600;
+        }
+        
+        .view-all {
+            color: var(--primary);
+            text-decoration: none;
+            font-size: 14px;
+        }
+        
+        .categories-grid {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            gap: 15px;
+        }
+        
+        .category-card {
+            background: white;
+            border-radius: 4px;
+            padding: 15px;
+            text-align: center;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            transition: all 0.3s;
+        }
+        
+        .category-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .category-image {
+            height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 10px;
+        }
+        
+        .category-image img {
+            max-height: 100%;
+            max-width: 100%;
+            object-fit: contain;
+        }
+        
+        .category-name {
+            font-size: 14px;
+            font-weight: 500;
+        }
+        
+        /* Products Section */
+        .products-section {
+            margin: 30px 0;
+        }
+        
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+        }
+        
+        .product-card {
+            background: white;
+            border-radius: 4px;
+            padding: 15px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            transition: all 0.3s;
+            position: relative;
+        }
+        
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .product-badge {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background-color: var(--secondary);
+            color: white;
+            padding: 3px 8px;
+            border-radius: 2px;
+            font-size: 10px;
+            font-weight: bold;
+        }
+        
+        .product-image {
+            height: 180px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 15px;
+        }
+        
+        .product-image img {
+            max-height: 100%;
+            max-width: 100%;
+            object-fit: contain;
+        }
+        
+        .product-title {
+            font-size: 14px;
+            margin-bottom: 8px;
+            height: 40px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+        }
+        
+        .product-price {
+            font-size: 16px;
+            font-weight: bold;
+            color: var(--primary);
+            margin-bottom: 8px;
+        }
+        
+        .product-original-price {
+            text-decoration: line-through;
+            color: var(--gray);
+            font-size: 12px;
+            margin-left: 5px;
+        }
+        
+        .product-discount {
+            color: var(--success);
+            font-size: 12px;
+            margin-left: 5px;
+        }
+        
+        .product-rating {
+            background-color: var(--success);
+            color: white;
+            padding: 2px 4px;
+            border-radius: 3px;
+            font-size: 12px;
+            display: inline-flex;
+            align-items: center;
+        }
+        
+        .product-actions {
+            margin-top: 15px;
+            display: flex;
+            justify-content: space-between;
+        }
+        
+        .btn {
+            padding: 8px 15px;
+            border: none;
+            border-radius: 2px;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: 500;
+        }
+        
+        .btn-primary {
+            background-color: var(--primary);
+            color: white;
+        }
+        
+        .btn-outline {
+            background-color: transparent;
+            border: 1px solid var(--primary);
+            color: var(--primary);
+        }
+        
+        /* Footer */
+        footer {
+            background-color: #172337;
+            color: white;
+            padding: 40px 0 20px;
+        }
+        
+        .footer-container {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+        
+        .footer-column h3 {
+            font-size: 14px;
+            margin-bottom: 15px;
+            color: #878787;
+            text-transform: uppercase;
+        }
+        
+        .footer-column ul {
+            list-style: none;
+        }
+        
+        .footer-column ul li {
+            margin-bottom: 10px;
+        }
+        
+        .footer-column ul li a {
+            color: white;
+            text-decoration: none;
+            font-size: 12px;
+        }
+        
+        .footer-bottom {
+            border-top: 1px solid #454d5e;
+            padding-top: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .payment-methods img {
+            height: 25px;
+            margin-left: 10px;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .categories-grid, .products-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .header-container {
+                flex-wrap: wrap;
+            }
+            
+            .search-bar {
+                order: 1;
+                width: 100%;
+                margin: 10px 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Top Bar -->
+    <div class="top-bar">
+        <div class="container top-bar-container">
+            <div>Welcome to RoboMart - Your Robotics Components Store</div>
+            <div class="top-links">
+                <a href="#"><i class="fas fa-phone"></i> +91 9876543210</a>
+                <a href="#"><i class="fas fa-envelope"></i> support@robomart.com</a>
+                <a href="#"><i class="fas fa-question-circle"></i> Help</a>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Main Header -->
+    <header>
+        <div class="container header-container">
+            <div class="logo">RoboMart</div>
+            
+            <div class="search-bar">
+                <input type="text" placeholder="Search for robotics components, kits and more...">
+                <button><i class="fas fa-search"></i></button>
+            </div>
+            
+            <div class="header-actions">
+                <a href="#" class="action-item">
+                    <i class="fas fa-user"></i>
+                    <span>Account</span>
+                </a>
+                <a href="#" class="action-item">
+                    <i class="fas fa-heart"></i>
+                    <span>Wishlist</span>
+                </a>
+                <a href="#" class="action-item">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span>Cart (0)</span>
+                </a>
+            </div>
+        </div>
+    </header>
+    
+    <!-- Mega Menu (would be toggled via JS) -->
+    <div class="mega-menu">
+        <div class="container menu-columns">
+            <div class="menu-column">
+                <h3>Development Boards</h3>
+                <ul>
+                    <li><a href="#">Arduino Boards</a></li>
+                    <li><a href="#">Raspberry Pi</a></li>
+                    <li><a href="#">ESP Boards</a></li>
+                    <li><a href="#">STM32 Boards</a></li>
+                    <li><a href="#">BeagleBone</a></li>
+                </ul>
+            </div>
+            <div class="menu-column">
+                <h3>Sensors</h3>
+                <ul>
+                    <li><a href="#">Temperature Sensors</a></li>
+                    <li><a href="#">Proximity Sensors</a></li>
+                    <li><a href="#">Motion Sensors</a></li>
+                    <li><a href="#">Environmental Sensors</a></li>
+                    <li><a href="#">Pressure Sensors</a></li>
+                </ul>
+            </div>
+            <div class="menu-column">
+                <h3>Motors & Drivers</h3>
+                <ul>
+                    <li><a href="#">DC Motors</a></li>
+                    <li><a href="#">Servo Motors</a></li>
+                    <li><a href="#">Stepper Motors</a></li>
+                    <li><a href="#">Motor Drivers</a></li>
+                    <li><a href="#">Robotic Arms</a></li>
+                </ul>
+            </div>
+            <div class="menu-column">
+                <h3>Kits & Projects</h3>
+                <ul>
+                    <li><a href="#">Robotics Starter Kits</a></li>
+                    <li><a href="#">IoT Kits</a></li>
+                    <li><a href="#">Drone Kits</a></li>
+                    <li><a href="#">3D Printer Kits</a></li>
+                    <li><a href="#">Project Components</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Hero Banner -->
+    <div class="container">
+        <div class="hero-banner">
+            <img src="https://robocraze.com/cdn/shop/files/Arduino_1920x.jpg" alt="Robotics Components">
+        </div>
+    </div>
+    
+    <!-- Categories Section -->
+    <div class="container categories-section">
+        <div class="section-header">
+            <h2 class="section-title">Shop By Category</h2>
+            <a href="#" class="view-all">View All Categories</a>
+        </div>
+        
+        <div class="categories-grid">
+            <div class="category-card">
+                <div class="category-image">
+                    <img src="https://robocraze.com/cdn/shop/files/arduino_1_100x.png" alt="Arduino">
+                </div>
+                <div class="category-name">Arduino</div>
+            </div>
+            <div class="category-card">
+                <div class="category-image">
+                    <img src="https://robocraze.com/cdn/shop/files/raspberry-pi_100x.png" alt="Raspberry Pi">
+                </div>
+                <div class="category-name">Raspberry Pi</div>
+            </div>
+            <div class="category-card">
+                <div class="category-image">
+                    <img src="https://robocraze.com/cdn/shop/files/sensors_100x.png" alt="Sensors">
+                </div>
+                <div class="category-name">Sensors</div>
+            </div>
+            <div class="category-card">
+                <div class="category-image">
+                    <img src="https://robocraze.com/cdn/shop/files/robotics-kits_100x.png" alt="Robotics Kits">
+                </div>
+                <div class="category-name">Robotics Kits</div>
+            </div>
+            <div class="category-card">
+                <div class="category-image">
+                    <img src="https://robocraze.com/cdn/shop/files/motors_100x.png" alt="Motors">
+                </div>
+                <div class="category-name">Motors</div>
+            </div>
+            <div class="category-card">
+                <div class="category-image">
+                    <img src="https://robocraze.com/cdn/shop/files/3d-printing_100x.png" alt="3D Printing">
+                </div>
+                <div class="category-name">3D Printing</div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Featured Products -->
+    <div class="container products-section">
+        <div class="section-header">
+            <h2 class="section-title">Featured Products</h2>
+            <a href="#" class="view-all">View All Products</a>
+        </div>
+        
+        <div class="products-grid">
+            <div class="product-card">
+                <div class="product-badge">BESTSELLER</div>
+                <div class="product-image">
+                    <img src="https://robocraze.com/cdn/shop/products/arduino-uno-r3_600x.jpg" alt="Arduino Uno R3">
+                </div>
+                <h3 class="product-title">Arduino Uno R3 Development Board with USB Cable</h3>
+                <div class="product-price">₹450 <span class="product-original-price">₹650</span> <span class="product-discount">31% off</span></div>
+                <div class="product-rating">4.5 <i class="fas fa-star"></i></div>
+                <div class="product-actions">
+                    <button class="btn btn-outline">Quick View</button>
+                    <button class="btn btn-primary">Add to Cart</button>
+                </div>
+            </div>
+            
+            <div class="product-card">
+                <div class="product-badge">NEW</div>
+                <div class="product-image">
+                    <img src="https://robocraze.com/cdn/shop/products/raspberry-pi-4-model-b-4gb-ram_600x.jpg" alt="Raspberry Pi 4">
+                </div>
+                <h3 class="product-title">Raspberry Pi 4 Model B (4GB RAM)</h3>
+                <div class="product-price">₹4,500 <span class="product-original-price">₹5,200</span> <span class="product-discount">13% off</span></div>
+                <div class="product-rating">4.7 <i class="fas fa-star"></i></div>
+                <div class="product-actions">
+                    <button class="btn btn-outline">Quick View</button>
+                    <button class="btn btn-primary">Add to Cart</button>
+                </div>
+            </div>
+            
+            <div class="product-card">
+                <div class="product-image">
+                    <img src="https://robocraze.com/cdn/shop/products/hc-sr04-ultrasonic-sensor_600x.jpg" alt="Ultrasonic Sensor">
+                </div>
+                <h3 class="product-title">HC-SR04 Ultrasonic Sensor Module</h3>
+                <div class="product-price">₹120 <span class="product-original-price">₹180</span> <span class="product-discount">33% off</span></div>
+                <div class="product-rating">4.2 <i class="fas fa-star"></i></div>
+                <div class="product-actions">
+                    <button class="btn btn-outline">Quick View</button>
+                    <button class="btn btn-primary">Add to Cart</button>
+                </div>
+            </div>
+            
+            <div class="product-card">
+                <div class="product-image">
+                    <img src="https://robocraze.com/cdn/shop/products/sg90-micro-servo-motor_600x.jpg" alt="Servo Motor">
+                </div>
+                <h3 class="product-title">SG90 Micro Servo Motor</h3>
+                <div class="product-price">₹150 <span class="product-original-price">₹200</span> <span class="product-discount">25% off</span></div>
+                <div class="product-rating">4.0 <i class="fas fa-star"></i></div>
+                <div class="product-actions">
+                    <button class="btn btn-outline">Quick View</button>
+                    <button class="btn btn-primary">Add to Cart</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Brands Section -->
+    <div class="container products-section">
+        <div class="section-header">
+            <h2 class="section-title">Shop By Brands</h2>
+            <a href="#" class="view-all">View All Brands</a>
+        </div>
+        
+        <div class="categories-grid">
+            <div class="category-card">
+                <div class="category-image">
+                    <img src="https://robocraze.com/cdn/shop/files/arduino_1_100x.png" alt="Arduino">
+                </div>
+                <div class="category-name">Arduino</div>
+            </div>
+            <div class="category-card">
+                <div class="category-image">
+                    <img src="https://robocraze.com/cdn/shop/files/raspberry-pi_100x.png" alt="Raspberry Pi">
+                </div>
+                <div class="category-name">Raspberry Pi</div>
+            </div>
+            <div class="category-card">
+                <div class="category-image">
+                    <img src="https://robocraze.com/cdn/shop/files/espressif_100x.png" alt="Espressif">
+                </div>
+                <div class="category-name">Espressif</div>
+            </div>
+            <div class="category-card">
+                <div class="category-image">
+                    <img src="https://robocraze.com/cdn/shop/files/nvidia_100x.png" alt="NVIDIA">
+                </div>
+                <div class="category-name">NVIDIA</div>
+            </div>
+            <div class="category-card">
+                <div class="category-image">
+                    <img src="https://robocraze.com/cdn/shop/files/seeed-studio_100x.png" alt="Seeed Studio">
+                </div>
+                <div class="category-name">Seeed Studio</div>
+            </div>
+            <div class="category-card">
+                <div class="category-image">
+                    <img src="https://robocraze.com/cdn/shop/files/stmicroelectronics_100x.png" alt="STMicroelectronics">
+                </div>
+                <div class="category-name">STMicro</div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-container">
+                <div class="footer-column">
+                    <h3>Shop</h3>
+                    <ul>
+                        <li><a href="#">Development Boards</a></li>
+                        <li><a href="#">Sensors</a></li>
+                        <li><a href="#">Motors & Drivers</a></li>
+                        <li><a href="#">Robotics Kits</a></li>
+                        <li><a href="#">Tools & Accessories</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Help</h3>
+                    <ul>
+                        <li><a href="#">Payment Options</a></li>
+                        <li><a href="#">Shipping Policy</a></li>
+                        <li><a href="#">Return Policy</a></li>
+                        <li><a href="#">FAQ</a></li>
+                        <li><a href="#">Contact Us</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Company</h3>
+                    <ul>
+                        <li><a href="#">About Us</a></li>
+                        <li><a href="#">Our Blog</a></li>
+                        <li><a href="#">Careers</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Terms of Service</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Newsletter</h3>
+                    <p style="font-size: 12px; margin-bottom: 15px; line-height: 1.5;">Subscribe to get updates on new products, special offers and project ideas.</p>
+                    <form>
+                        <input type="email" placeholder="Your email address" style="width: 100%; padding: 8px; margin-bottom: 10px; border: 1px solid #454d5e; background: transparent; color: white;">
+                        <button type="submit" class="btn btn-primary" style="width: 100%;">Subscribe</button>
+                    </form>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <div>© 2023 RoboMart. All Rights Reserved.</div>
+                <div class="payment-methods">
+                    <span>We accept:</span>
+                    <img src="https://robocraze.com/cdn/shop/files/visa_30x.png" alt="Visa">
+                    <img src="https://robocraze.com/cdn/shop/files/mastercard_30x.png" alt="Mastercard">
+                    <img src="https://robocraze.com/cdn/shop/files/paypal_30x.png" alt="PayPal">
+                </div>
+            </div>
+        </div>
+    </footer>
+    
+    <script>
+        // Enhanced JavaScript
+        document.addEventListener('DOMContentLoaded', function() {
+            // Mega menu toggle
+            const logo = document.querySelector('.logo');
+            const megaMenu = document.querySelector('.mega-menu');
+            
+            logo.addEventListener('mouseenter', function() {
+                megaMenu.classList.add('active');
+            });
+            
+            megaMenu.addEventListener('mouseleave', function() {
+                megaMenu.classList.remove('active');
+            });
+            
+            // Product quick view
+            const quickViewButtons = document.querySelectorAll('.btn-outline');
+            quickViewButtons.forEach(button => {
+                button.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    // In a real implementation, this would show a modal with product details
+                    alert('Quick view feature would show product details here');
+                });
+            });
+            
+            // Add to cart functionality
+            const addToCartButtons = document.querySelectorAll('.btn-primary');
+            addToCartButtons.forEach(button => {
+                button.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    const productCard = this.closest('.product-card');
+                    const productName = productCard.querySelector('.product-title').textContent;
+                    const productPrice = productCard.querySelector('.product-price').textContent.split(' ')[0];
+                    
+                    // In a real implementation, this would add to cart
+                    alert(`Added to cart: ${productName} - ${productPrice}`);
+                });
+            });
+            
+            // Product card click
+            const productCards = document.querySelectorAll('.product-card');
+            productCards.forEach(card => {
+                card.addEventListener('click', function() {
+                    const productName = this.querySelector('.product-title').textContent;
+                    // In a real implementation, this would navigate to product page
+                    console.log('Navigating to product page:', productName);
+                });
+            });
+        });
+    </script>
+</body>
+</html>

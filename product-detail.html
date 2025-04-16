@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Detail - QuantixGear</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* Shared styles with main page */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f5f5;
+            color: #212121;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+        
+        /* Header - same as index.html */
+        header {
+            background-color: #2874f0;
+            color: white;
+            padding: 12px 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        
+        .header-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .logo {
+            font-size: 22px;
+            font-weight: bold;
+            margin-right: 20px;
+        }
+        
+        .logo a {
+            color: white;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+        }
+        
+        /* Product Detail Styles */
+        .product-detail-container {
+            padding: 30px 0;
+        }
+        
+        .product-detail {
+            display: flex;
+            gap: 30px;
+            background: white;
+            border-radius: 4px;
+            padding: 20px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        
+        .product-images {
+            flex: 1;
+        }
+        
+        .main-image {
+            height: 400px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 15px;
+            border: 1px solid #f0f0f0;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+        
+        .main-image img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+        }
+        
+        .thumbnail-images {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .thumbnail {
+            width: 60px;
+            height: 60px;
+            border: 1px solid #e0e0e0;
+            border-radius: 4px;
+            cursor: pointer;
+            overflow: hidden;
+        }
+        
+        .thumbnail img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+        
+        .product-info {
+            flex: 1;
+        }
+        
+        .product-title {
+            font-size: 22px;
+            margin-bottom: 10px;
+            font-weight: 500;
+        }
+        
+        .product-rating {
+            display: inline-flex;
+            align-items: center;
+            background-color: #388e3c;
+            color: white;
+            padding: 3px 6px;
+            border-radius: 3px;
+            font-size: 14px;
+            margin-bottom: 15px;
+        }
+        
+        .product-rating i {
+            font-size: 12px;
+            margin-left: 3px;
+        }
+        
+        .product-rating-count {
+            color: #2874f0;
+            margin-left: 10px;
+            font-size: 14px;
+        }
+        
+        .product-price {
+            font-size: 28px;
+            font-weight: bold;
+            color: #2874f0;
+            margin: 15px 0;
+        }
+        
+        .product-original-price {
+            text-decoration: line-through;
+            color: #878787;
+            font-size: 18px;
+            margin-left: 10px;
+        }
+        
+        .product-discount {
+            color: #388e3c;
+            font-size: 18px;
+            margin-left: 10px;
+        }
+        
+        .product-offers {
+            margin: 20px 0;
+        }
+        
+        .offer-title {
+            font-size: 16px;
+            font-weight: 500;
+            margin-bottom: 10px;
+        }
+        
+        .offer-item {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 8px;
+        }
+        
+        .offer-item i {
+            color: #2874f0;
+            margin-right: 8px;
+            margin-top: 3px;
+        }
+        
+        .product-actions {
+            display: flex;
+            gap: 15px;
+            margin-top: 30px;
+        }
+        
+        .add-to-cart-btn, .buy-now-btn {
+            padding: 12px 30px;
+            border-radius: 3px;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+        }
+        
+        .add-to-cart-btn {
+            background-color: #ff9f00;
+            color: white;
+            border: none;
+        }
+        
+        .buy-now-btn {
+            background-color: #2874f0;
+            color: white;
+            border: none;
+        }
+        
+        .product-description {
+            margin-top: 40px;
+            background: white;
+            border-radius: 4px;
+            padding: 20px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        
+        .description-title {
+            font-size: 18px;
+            font-weight: 500;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        
+        .description-content {
+            line-height: 1.6;
+        }
+        
+        .description-content ul {
+            margin-left: 20px;
+        }
+        
+        .description-content li {
+            margin-bottom: 8px;
+        }
+        
+        @media (max-width: 768px) {
+            .product-detail {
+                flex-direction: column;
+            }
+            
+            .main-image {
+                height: 300px;
+            }
+            
+            .product-actions {
+                flex-direction: column;
+            }
+            
+            .add-to-cart-btn, .buy-now-btn {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container header-container">
+            <div class="logo">
+                <a href="index.html"><i class="fas fa-robot"></i> QuantixGear</a>
+            </div>
+            <div class="user-actions">
+                <a href="login.html"><i class="fas fa-user"></i> <span>Login</span></a>
+                <a href="cart.html"><i class="fas fa-shopping-cart"></i> <span>Cart</span> <span class="cart-count">3</span></a>
+            </div>
+        </div>
+    </header>
+    
+    <!-- Product Detail -->
+    <div class="container product-detail-container">
+        <div class="product-detail">
+            <div class="product-images">
+                <div class="main-image">
+                    <img src="https://robocraze.com/cdn/shop/products/arduino-uno-r3_600x.jpg" alt="Arduino Uno R3">
+                </div>
+                <div class="thumbnail-images">
+                    <div class="thumbnail">
+                        <img src="https://robocraze.com/cdn/shop/products/arduino-uno-r3_600x.jpg" alt="Arduino Uno R3">
+                    </div>
+                    <div class="thumbnail">
+                        <img src="https://robocraze.com/cdn/shop/products/arduino-uno-r3-1_600x.jpg" alt="Arduino Uno R3">
+                    </div>
+                    <div class="thumbnail">
+                        <img src="https://robocraze.com/cdn/shop/products/arduino-uno-r3-2_600x.jpg" alt="Arduino Uno R3">
+                    </div>
+                </div>
+            </div>
+            
+            <div class="product-info">
+                <h1 class="product-title">Arduino Uno R3 Development Board with USB Cable</h1>
+                <div>
+                    <span class="product-rating">4.5 <i class="fas fa-star"></i></span>
+                    <span class="product-rating-count">12,345 Ratings</span>
+                </div>
+                
+                <div class="product-price">₹450 <span class="product-original-price">₹650</span> <span class="product-discount">31% off</span></div>
+                
+                <div class="product-offers">
+                    <h3 class="offer-title">Available offers</h3>
+                    <div class="offer-item">
+                        <i class="fas fa-tag"></i>
+                        <span>Special Price Get extra 5% off (price inclusive of discount) <a href="#" style="color: #2874f0;">T&C</a></span>
+                    </div>
+                    <div class="offer-item">
+                        <i class="fas fa-tag"></i>
+                        <span>Bank Offer 5% Cashback on Axis Bank Card <a href="#" style="color: #2874f0;">T&C</a></span>
+                    </div>
+                    <div class="offer-item">
+                        <i class="fas fa-tag"></i>
+                        <span>Free shipping on orders above ₹500</span>
+                    </div>
+                </div>
+                
+                <div class="product-actions">
+                    <button class="add-to-cart-btn">ADD TO CART</button>
+                    <button class="buy-now-btn">BUY NOW</button>
+                </div>
+            </div>
+        </div>
+        
+        <div class="product-description">
+            <h3 class="description-title">Product Description</h3>
+            <div class="description-content">
+                <p>The Arduino Uno R3 is a microcontroller board based on the ATmega328P. It has 14 digital input/output pins (of which 6 can be used as PWM outputs), 6 analog inputs, a 16 MHz ceramic resonator, a USB connection, a power jack, an ICSP header and a reset button.</p>
+                
+                <h4>Features:</h4>
+                <ul>
+                    <li>Microcontroller: ATmega328P</li>
+                    <li>Operating Voltage: 5V</li>
+                    <li>Input Voltage (recommended): 7-12V</li>
+                    <li>Digital I/O Pins: 14 (of which 6 provide PWM output)</li>
+                    <li>Analog Input Pins: 6</li>
+                    <li>DC Current per I/O Pin: 20 mA</li>
+                    <li>Flash Memory: 32 KB (ATmega328P) of which 0.5 KB used by bootloader</li>
+                    <li>SRAM: 2 KB (ATmega328P)</li>
+                    <li>EEPROM: 1 KB (ATmega328P)</li>
+                    <li>Clock Speed: 16 MHz</li>
+                </ul>
+                
+                <h4>Package Includes:</h4>
+                <ul>
+                    <li>1 x Arduino Uno R3 Board</li>
+                    <li>1 x USB Cable</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <!-- Same footer as index.html -->
+        </div>
+    </footer>
+    
+    <script>
+        // Product detail functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            // Thumbnail click
+            const thumbnails = document.querySelectorAll('.thumbnail');
+            thumbnails.forEach(thumb => {
+                thumb.addEventListener('click', function() {
+                    const mainImage = document.querySelector('.main-image img');
+                    const thumbImage = this.querySelector('img');
+                    mainImage.src = thumbImage.src;
+                });
+            });
+            
+            // Add to cart button
+            document.querySelector('.add-to-cart-btn').addEventListener('click', function() {
+                // In a real implementation, add to cart
+                alert('Product added to cart!');
+                
+                // Update cart count
+                const cartCount = document.querySelector('.cart-count');
+                const currentCount = parseInt(cartCount.textContent) || 0;
+                cartCount.textContent = currentCount + 1;
+                cartCount.style.display = 'flex';
+            });
+            
+            // Buy now button
+            document.querySelector('.buy-now-btn').addEventListener('click', function() {
+                // In a real implementation, redirect to checkout
+                alert('Proceeding to checkout');
+                window.location.href = 'checkout.html';
+            });
+        });
+    </script>
+</body>
+</html>

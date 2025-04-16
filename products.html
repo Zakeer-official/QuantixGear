@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Products - QuantixGear</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* Shared styles with main page */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f5f5;
+            color: #212121;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+        
+        /* Header - same as index.html */
+        header {
+            background-color: #2874f0;
+            color: white;
+            padding: 12px 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        
+        .header-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .logo {
+            font-size: 22px;
+            font-weight: bold;
+            margin-right: 20px;
+        }
+        
+        .logo a {
+            color: white;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+        }
+        
+        /* Products Page Styles */
+        .products-page {
+            padding: 30px 0;
+        }
+        
+        .page-title {
+            font-size: 24px;
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+        
+        .products-content {
+            display: flex;
+            gap: 20px;
+        }
+        
+        .filters {
+            width: 250px;
+            background: white;
+            border-radius: 4px;
+            padding: 20px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            height: fit-content;
+            position: sticky;
+            top: 80px;
+        }
+        
+        .filter-section {
+            margin-bottom: 20px;
+            border-bottom: 1px solid #f0f0f0;
+            padding-bottom: 15px;
+        }
+        
+        .filter-section:last-child {
+            border-bottom: none;
+        }
+        
+        .filter-title {
+            font-size: 16px;
+            font-weight: 500;
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+        }
+        
+        .filter-options {
+            margin-left: 5px;
+        }
+        
+        .filter-option {
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .filter-option input {
+            margin-right: 8px;
+        }
+        
+        .filter-option label {
+            font-size: 14px;
+            cursor: pointer;
+        }
+        
+        .products-list {
+            flex: 1;
+        }
+        
+        .products-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            background: white;
+            padding: 15px;
+            border-radius: 4px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        
+        .sort-options select {
+            padding: 8px;
+            border: 1px solid #e0e0e0;
+            border-radius: 3px;
+        }
+        
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+        }
+        
+        /* Product card - same as index.html */
+        .product-card {
+            background: white;
+            border-radius: 4px;
+            padding: 15px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            transition: all 0.3s;
+            text-decoration: none;
+            color: #212121;
+        }
+        
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+        
+        .product-image {
+            height: 180px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 15px;
+        }
+        
+        .product-image img {
+            max-height: 100%;
+            max-width: 100%;
+            object-fit: contain;
+        }
+        
+        .product-title {
+            font-size: 14px;
+            margin-bottom: 8px;
+            height: 40px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+        }
+        
+        .product-price {
+            font-size: 16px;
+            font-weight: bold;
+            color: #2874f0;
+            margin-bottom: 8px;
+        }
+        
+        .product-original-price {
+            text-decoration: line-through;
+            color: #878787;
+            font-size: 12px;
+            margin-left: 5px;
+        }
+        
+        .product-discount {
+            color: #388e3c;
+            font-size: 12px;
+            margin-left: 5px;
+        }
+        
+        .product-rating {
+            background-color: #388e3c;
+            color: white;
+            padding: 2px 4px;
+            border-radius: 3px;
+            font-size: 12px;
+            display: inline-flex;
+            align-items: center;
+        }
+        
+        .product-rating i {
+            font-size: 10px;
+            margin-left: 2px;
+        }
+        
+        .add-to-cart {
+            width: 100%;
+            background-color: #2874f0;
+            color: white;
+            border: none;
+            padding: 8px;
+            border-radius: 3px;
+            margin-top: 10px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: background-color 0.3s;
+        }
+        
+        .pagination {
+            display: flex;
+            justify-content: center;
+            margin-top: 30px;
+        }
+        
+        .pagination a {
+            color: #2874f0;
+            padding: 8px 16px;
+            text-decoration: none;
+            border: 1px solid #e0e0e0;
+            margin: 0 4px;
+            border-radius: 3px;
+        }
+        
+        .pagination a.active {
+            background-color: #2874f0;
+            color: white;
+            border: 1px solid #2874f0;
+        }
+        
+        .pagination a:hover:not(.active) {
+            background-color: #f0f0f0;
+        }
+        
+        @media (max-width: 768px) {
+            .products-content {
+                flex-direction: column;
+            }
+            
+            .filters {
+                width: 100%;
+                position: static;
+                margin-bottom: 20px;
+            }
+            
+            .product-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .product-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container header-container">
+            <div class="logo">
+                <a href="index.html"><i class="fas fa-robot"></i> QuantixGear</a>
+            </div>
+            <div class="user-actions">
+                <a href="login.html"><i class="fas fa-user"></i> <span>Login</span></a>
+                <a href="cart.html"><i class="fas fa-shopping-cart"></i> <span>Cart</span> <span class="cart-count">3</span></a>
+            </div>
+        </div>
+    </header>
+    
+    <!-- Products Page Content -->
+    <div class="container products-page">
+        <h1 class="page-title">Arduino Products</h1>
+        
+        <div class="products-content">
+            <div class="filters">
+                <div class="filter-section">
+                    <h3 class="filter-title">Categories</h3>
+                    <div class="filter-options">
+                        <div class="filter-option">
+                            <input type="checkbox" id="uno" checked>
+                            <label for="uno">Uno Boards</label>
+                        </div>
+                        <div class="filter-option">
+                            <input type="checkbox" id="mega">
+                            <label for="mega">Mega Boards</label>
+                        </div>
+                        <div class="filter-option">
+                            <input type="checkbox" id="nano">
+                            <label for="nano">Nano Boards</label>
+                        </div>
+                        <div class="filter-option">
+                            <input type="checkbox" id="kits">
+                            <label for="kits">Starter Kits</label>
+                        </div>
+                        <div class="filter-option">
+                            <input type="checkbox" id="shields">
+                            <label for="shields">Shields</label>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="filter-section">
+                    <h3 class="filter-title">Price</h3>
+                    <div class="filter-options">
+                        <div class="filter-option">
+                            <input type="radio" id="price1" name="price" checked>
+                            <label for="price1">Under ₹500</label>
+                        </div>
+                        <div class="filter-option">
+                            <input type="radio" id="price2" name="price">
+                            <label for="price2">₹500 - ₹1000</label>
+                        </div>
+                        <div class="filter-option">
+                            <input type="radio" id="price3" name="price">
+                            <label for="price3">₹1000 - ₹2000</label>
+                        </div>
+                        <div class="filter-option">
+                            <input type="radio" id="price4" name="price">
+                            <label for="price4">Above ₹2000</label>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="filter-section">
+                    <h3 class="filter-title">Brand</h3>
+                    <div class="filter-options">
+                        <div class="filter-option">
+                            <input type="checkbox" id="official" checked>
+                            <label for="official">Arduino Official</label>
+                        </div>
+                        <div class="filter-option">
+                            <input type="checkbox" id="clone">
+                            <label for="clone">Arduino Compatible</label>
+                        </div>
+                    </div>
+                </div>
+                
+                <button style="width: 100%; padding: 10px; background-color: #2874f0; color: white; border: none; border-radius: 3px; cursor: pointer;">
+                    Apply Filters
+                </button>
+            </div>
+            
+            <div class="products-list">
+                <div class="products-header">
+                    <div>1-12 of 45 products</div>
+                    <div class="sort-options">
+                        <select>
+                            <option>Sort by Popularity</option>
+                            <option>Sort by Price - Low to High</option>
+                            <option>Sort by Price - High to Low</option>
+                            <option>Sort by Rating</option>
+                            <option>Sort by Newest</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="product-grid">
+                    <a href="product-detail.html" class="product-card">
+                        <div class="product-image">
+                            <img src="https://robocraze.com/cdn/shop/products/arduino-uno-r3_600x.jpg" alt="Arduino Uno R3">
+                        </div>
+                        <h3 class="product-title">Arduino Uno R3 Development Board with USB Cable</h3>
+                        <div class="product-price">₹450 <span class="product-original-price">₹650</span> <span class="product-discount">31% off</span></div>
+                        <div class="product-rating">4.5 <i class="fas fa-star"></i></div>
