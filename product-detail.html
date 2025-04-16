@@ -268,9 +268,8 @@
                 <input type="text" placeholder="Search for robotics components...">
                 <button><i class="fas fa-search"></i></button>
             </div>
-            <div class="user-actions">
-                <a href="login.html"><i class="fas fa-user"></i> <span>Login</span></a>
-                <a href="cart.html"><i class="fas fa-shopping-cart"></i> <span>Cart</span> <span class="cart-count">0</span></a>
+            <div class="user-actions" id="userActions">
+                <!-- Dynamic content will be inserted here by auth.js -->
             </div>
         </div>
     </header>
@@ -425,84 +424,35 @@
     </footer>
     
     <script>
-        // Product detail functionality
         document.addEventListener('DOMContentLoaded', function() {
-            // Thumbnail click
-            const thumbnails = document.querySelectorAll('.thumbnail');
-            thumbnails.forEach(thumb => {
-                thumb.addEventListener('click', function() {
-                    const mainImage = document.querySelector('.main-image img');
-                    const thumbImage = this.querySelector('img');
-                    mainImage.src = thumbImage.src;
-                });
-            });
-            // Replace add to cart button handler with this:
-            document.addEventListener('click', function(e) {
-                if (e.target.classList.contains('add-to-cart')) {
-                    e.preventDefault();
-                    
-                    // Check if user is logged in
-                    const user = JSON.parse(localStorage.getItem('quantixgearUser'));
-                    if (!user) {
-                        alert('Please login to add items to your cart');
-                        window.location.href = 'login.html?redirect=' + encodeURIComponent(window.location.pathname);
-                        return;
-                    }
-                    
-                    const productId = e.target.getAttribute('data-id');
-                    const product = products.find(p => p.id === productId);
-                    
-                    // Get or initialize cart
-                    let cart = JSON.parse(localStorage.getItem('quantixgearCart')) || [];
-                    
-                    // Check if product already in cart
-                    const existingItemIndex = cart.findIndex(item => item.id === product.id);
-                    
-                    if (existingItemIndex >= 0) {
-                        // Increment quantity if already in cart
-                        cart[existingItemIndex].quantity++;
-                    } else {
-                        // Add new item to cart
-                        cart.push({
-                            id: product.id,
-                            title: product.title,
-                            price: product.price,
-                            originalPrice: product.originalPrice,
-                            discount: product.discount,
-                            image: product.image,
-                            quantity: 1
-                        });
-                    }
-                    
-                    // Save cart
-                    localStorage.setItem('quantixgearCart', JSON.stringify(cart));
-                    
-                    // Update cart count
-                    const cartCount = cart.reduce((total, item) => total + item.quantity, 0);
-                    document.querySelector('.cart-count').textContent = cartCount;
-                    document.querySelector('.cart-count').style.display = 'flex';
-                    
-                    // Show feedback
-                    alert(`${product.title} added to cart!`);
-                }
-            });
+            // Get product details
+            const urlParams = new URLSearchParams(window.location.search);
+            const productId = urlParams.get('id');
+            const products = JSON.parse(localStorage.getItem('quantixgearProducts')) || [];
+            const product = products.find(p => p.id === productId) || products[0];
             
-            // Add to cart button
-            document.querySelector('.add-to-cart-btn').addEventListener('click', function() {
-                // In a real implementation, add to cart
-                alert('Product added to cart!');
-                
-                // Update cart count
-                const cartCount = document.querySelector('.cart-count');
-                const currentCount = parseInt(cartCount.textContent) || 0;
-                cartCount.textContent = currentCount + 1;
-                cartCount.style.display = 'flex';
-            });
+            // Set product details
+            document.getElementById('productTitle').textContent = product.title;
+            document.getElementById('productPrice').innerHTML = `₹${product.price}`;
+            document.getElementById('mainProductImage').src = product.image;
             
             // Buy now button
-            document.querySelector('.buy-now-btn').addEventListener('click', function() {
-                // In a real implementation, redirect to checkout
-                alert('Proceeding to checkout');
+            document.getElementById('buyNowBtn').addEventListener('click', function() {
+                const user = JSON.parse(localStorage.getItem('quantixgearUser'));
+                if (!user) {
+                    window.location.href = `login.html?redirect=product-detail.html?id=${productId}`;
+                    return;
+                }
+                
+                // Create cart with just this item
+                localStorage.setItem('quantixgearCart', JSON.stringify([{
+                    id: product.id,
+                    title: product.title,
+                    price: product.price,
+                    image: product.image,
+                    quantity: 1
+                }]));
+                
                 window.location.href = 'checkout.html';
             });
         });

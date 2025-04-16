@@ -370,6 +370,92 @@
             font-size: 12px;
             color: #878787;
         }
+        /* User Profile Styles */
+        .user-profile {
+                position: relative;
+                display: inline-block;
+            }
+
+            .profile-btn {
+                background: none;
+                border: none;
+                color: white;
+                cursor: pointer;
+                display: flex;
+                align-items: center;
+                gap: 8px;
+                font-size: 14px;
+                padding: 8px 12px;
+                border-radius: 4px;
+            }
+
+            .profile-btn:hover {
+                background-color: rgba(255, 255, 255, 0.1);
+            }
+
+            .profile-btn i.fa-user-circle {
+                font-size: 20px;
+            }
+
+            .dropdown-content {
+                display: none;
+                position: absolute;
+                right: 0;
+                background-color: white;
+                min-width: 160px;
+                box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+                z-index: 100;
+                border-radius: 4px;
+                overflow: hidden;
+            }
+
+            .dropdown-content a {
+                color: #333;
+                padding: 12px 16px;
+                text-decoration: none;
+                display: block;
+                font-size: 14px;
+            }
+
+            .dropdown-content a:hover {
+                background-color: #f5f5f5;
+            }
+
+            .dropdown-content i {
+                margin-right: 8px;
+                width: 16px;
+                text-align: center;
+            }
+
+            .profile-dropdown:hover .dropdown-content {
+                display: block;
+            }
+
+            .cart-link {
+                position: relative;
+                color: white;
+                text-decoration: none;
+                display: flex;
+                align-items: center;
+                gap: 5px;
+                margin-left: 15px;
+            }
+
+            .cart-count {
+                background-color: #ff6161;
+                color: white;
+                border-radius: 50%;
+                width: 18px;
+                height: 18px;
+                font-size: 10px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                position: absolute;
+                top: -8px;
+                right: -8px;
+            }
+        
         
         /* Responsive Design */
         @media (max-width: 768px) {
@@ -397,7 +483,7 @@
                 grid-template-columns: repeat(2, 1fr);
             }
         }
-        
+    
         @media (max-width: 480px) {
             .category-grid {
                 grid-template-columns: repeat(2, 1fr);
@@ -429,9 +515,8 @@
                 <input type="text" placeholder="Search for robotics components...">
                 <button><i class="fas fa-search"></i></button>
             </div>
-            <div class="user-actions">
-                <a href="login.html"><i class="fas fa-user"></i> <span>Login</span></a>
-                <a href="cart.html"><i class="fas fa-shopping-cart"></i> <span>Cart</span> <span class="cart-count">0</span></a>
+            <div class="user-actions" id="userActions">
+                <!-- Dynamic content will be inserted here by auth.js -->
             </div>
         </div>
     </header>
@@ -444,25 +529,14 @@
             <a href="products.html?category=motors">Motors</a>
             <a href="products.html?category=kits">Robotics Kits</a>
             <a href="products.html?category=3d-printing">3D Printing</a>
-        </div>
-    </nav>
-    
-    <!-- Include auth.js in all pages -->
-    <script src="auth.js"></script>
-    
-    <!-- Navigation -->
-    <nav>
-        <div class="container nav-container">
-            <a href="products.html?category=arduino">Arduino</a>
-            <a href="products.html?category=raspberry-pi">Raspberry Pi</a>
-            <a href="products.html?category=sensors">Sensors</a>
-            <a href="products.html?category=motors">Motors</a>
-            <a href="products.html?category=kits">Robotics Kits</a>
-            <a href="products.html?category=3d-printing">3D Printing</a>
             <a href="products.html?category=tools">Tools</a>
             <a href="products.html?category=accessories">Accessories</a>
         </div>
     </nav>
+    
+    <script src="auth.js"></script>
+    
+    
     
     <!-- Hero Banner -->
     <div class="container">

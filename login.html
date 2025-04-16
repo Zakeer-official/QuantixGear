@@ -194,27 +194,12 @@
             <div class="logo">
                 <a href="index.html"><i class="fas fa-microchip"></i> QuantixGear</a>
             </div>
-            <div class="search-bar">
-                <input type="text" placeholder="Search for robotics components...">
-                <button><i class="fas fa-search"></i></button>
-            </div>
-            <div class="user-actions">
-                <a href="login.html"><i class="fas fa-user"></i> <span>Login</span></a>
-                <a href="cart.html"><i class="fas fa-shopping-cart"></i> <span>Cart</span> <span class="cart-count">0</span></a>
+            <div class="user-actions" id="userActions">
+                <!-- Dynamic content will be inserted here by auth.js -->
             </div>
         </div>
     </header>
     
-    <nav>
-        <div class="container nav-container">
-            <a href="products.html?category=arduino">Arduino</a>
-            <a href="products.html?category=raspberry-pi">Raspberry Pi</a>
-            <a href="products.html?category=sensors">Sensors</a>
-            <a href="products.html?category=motors">Motors</a>
-            <a href="products.html?category=kits">Robotics Kits</a>
-            <a href="products.html?category=3d-printing">3D Printing</a>
-        </div>
-    </nav>
     
     <!-- Include auth.js in all pages -->
     <script src="auth.js"></script>
@@ -332,11 +317,8 @@
                 const urlParams = new URLSearchParams(window.location.search);
                 const redirect = urlParams.get('redirect');
                 
-                if (redirect) {
-                    window.location.href = redirect;
-                } else {
-                    window.location.href = 'index.html';
-                }
+
+                window.location.href = redirect || 'index.html';
             } else {
                 alert('Invalid email or password');
             }

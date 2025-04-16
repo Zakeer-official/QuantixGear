@@ -275,9 +275,8 @@
                 <input type="text" placeholder="Search for robotics components...">
                 <button><i class="fas fa-search"></i></button>
             </div>
-            <div class="user-actions">
-                <a href="login.html"><i class="fas fa-user"></i> <span>Login</span></a>
-                <a href="cart.html"><i class="fas fa-shopping-cart"></i> <span>Cart</span> <span class="cart-count">0</span></a>
+            <div class="user-actions" id="userActions">
+                <!-- Dynamic content will be inserted here by auth.js -->
             </div>
         </div>
     </header>
@@ -388,125 +387,103 @@
     
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // Load cart from localStorage
-            let cart = JSON.parse(localStorage.getItem('quantixgearCart')) || [];
-            const cartItemsContainer = document.getElementById('cartItemsContainer');
-            const cartItemCount = document.getElementById('cartItemCount');
-            const summaryItemCount = document.getElementById('summaryItemCount');
-            const subtotalElement = document.getElementById('subtotal');
-            const totalElement = document.getElementById('total');
-            const cartCountElement = document.querySelector('.cart-count');
+            const user = JSON.parse(localStorage.getItem('quantixgearUser'));
+            if (!user) {
+                window.location.href = 'login.html?redirect=cart.html';
+                return;
+            }
             
-            // Display cart items
-            function renderCart() {
-                cartItemsContainer.innerHTML = '';
-                
-                if (cart.length === 0) {
-                    cartItemsContainer.innerHTML = `
-                        <div class="empty-cart">
-                            <i class="fas fa-shopping-cart"></i>
-                            <h3>Your cart is empty</h3>
-                            <p>You have no items in your shopping cart.</p>
-                            <a href="products.html" class="shop-btn">Continue Shopping</a>
+            const cart = JSON.parse(localStorage.getItem('quantixgearCart')) || [];
+            const cartItemsContainer = document.getElementById('cartItemsContainer');
+            
+            if (cart.length === 0) {
+                cartItemsContainer.innerHTML = `
+                    <div class="empty-cart">
+                        <i class="fas fa-shopping-cart"></i>
+                        <h3>Your cart is empty</h3>
+                        <p>You have no items in your shopping cart.</p>
+                        <a href="products.html" class="shop-btn">Continue Shopping</a>
+                    </div>
+                `;
+            } else {
+                let subtotal = 0;
+                cart.forEach((item, index) => {
+                    const itemElement = document.createElement('div');
+                    itemElement.className = 'cart-item';
+                    itemElement.innerHTML = `
+                        <div class="cart-item-image">
+                            <img src="${item.image}" alt="${item.title}">
+                        </div>
+                        <div class="cart-item-details">
+                            <h3 class="cart-item-title">${item.title}</h3>
+                            <div class="cart-item-price">₹${item.price} x ${item.quantity}</div>
+                            <div class="cart-item-actions">
+                                <div class="quantity-selector">
+                                    <button class="quantity-btn minus" data-index="${index}">-</button>
+                                    <input type="text" class="quantity-input" value="${item.quantity}" data-index="${index}">
+                                    <button class="quantity-btn plus" data-index="${index}">+</button>
+                                </div>
+                                <button class="remove-btn" data-index="${index}">REMOVE</button>
+                            </div>
                         </div>
                     `;
-                    document.getElementById('checkoutBtn').style.display = 'none';
-                } else {
-                    document.getElementById('checkoutBtn').style.display = 'block';
+                    cartItemsContainer.appendChild(itemElement);
+                    subtotal += item.price * item.quantity;
+                });
+                
+                // Update summary
+                document.getElementById('subtotal').textContent = `₹${subtotal}`;
+                document.getElementById('total').textContent = `₹${subtotal}`;
+                document.getElementById('cartItemCount').textContent = cart.reduce((total, item) => total + item.quantity, 0);
+                
+                // Quantity handlers
+                document.addEventListener('click', function(e) {
+                    if (e.target.classList.contains('minus')) {
+                        const index = e.target.getAttribute('data-index');
+                        if (cart[index].quantity > 1) {
+                            cart[index].quantity--;
+                        } else {
+                            cart.splice(index, 1);
+                        }
+                        updateCart();
+                    }
                     
-                    let subtotal = 0;
-                    let totalItems = 0;
+                    if (e.target.classList.contains('plus')) {
+                        const index = e.target.getAttribute('data-index');
+                        cart[index].quantity++;
+                        updateCart();
+                    }
                     
-                    cart.forEach((item, index) => {
-                        const itemElement = document.createElement('div');
-                        itemElement.className = 'cart-item';
-                        itemElement.innerHTML = `
-                            <div class="cart-item-image">
-                                <img src="${item.image}" alt="${item.title}">
-                            </div>
-                            <div class="cart-item-details">
-                                <h3 class="cart-item-title">${item.title}</h3>
-                                <div class="cart-item-price">₹${item.price} <span class="cart-item-original-price">₹${item.originalPrice}</span> <span class="cart-item-discount">${item.discount}% off</span></div>
-                                <div class="cart-item-actions">
-                                    <div class="quantity-selector">
-                                        <button class="quantity-btn minus" data-index="${index}">-</button>
-                                        <input type="text" class="quantity-input" value="${item.quantity}" data-index="${index}">
-                                        <button class="quantity-btn plus" data-index="${index}">+</button>
-                                    </div>
-                                    <button class="remove-btn" data-index="${index}">REMOVE</button>
-                                </div>
-                            </div>
-                        `;
-                        cartItemsContainer.appendChild(itemElement);
+                    if (e.target.classList.contains('remove-btn')) {
+                        const index = e.target.getAttribute('data-index');
+                        cart.splice(index, 1);
+                        updateCart();
+                    }
+                });
+                
+                // Input change handler
+                document.addEventListener('change', function(e) {
+                    if (e.target.classList.contains('quantity-input')) {
+                        const index = e.target.getAttribute('data-index');
+                        const newQty = parseInt(e.target.value);
                         
-                        subtotal += item.price * item.quantity;
-                        totalItems += item.quantity;
-                    });
-                    
-                    // Update totals
-                    cartItemCount.textContent = totalItems;
-                    summaryItemCount.textContent = totalItems;
-                    subtotalElement.textContent = `₹${subtotal}`;
-                    totalElement.textContent = `₹${subtotal}`;
-                    
-                    // Update cart count in header
-                    cartCountElement.textContent = totalItems;
-                    cartCountElement.style.display = totalItems > 0 ? 'flex' : 'none';
+                        if (newQty > 0) {
+                            cart[index].quantity = newQty;
+                            updateCart();
+                        } else {
+                            e.target.value = cart[index].quantity;
+                        }
+                    }
+                });
+                
+                function updateCart() {
+                    localStorage.setItem('quantixgearCart', JSON.stringify(cart));
+                    location.reload(); // Refresh to show updates
                 }
             }
             
-            // Initial render
-            renderCart();
-            
-            // Quantity button handlers
-            document.addEventListener('click', function(e) {
-                if (e.target.classList.contains('minus')) {
-                    const index = e.target.getAttribute('data-index');
-                    if (cart[index].quantity > 1) {
-                        cart[index].quantity--;
-                        localStorage.setItem('quantixgearCart', JSON.stringify(cart));
-                        renderCart();
-                    }
-                }
-                
-                if (e.target.classList.contains('plus')) {
-                    const index = e.target.getAttribute('data-index');
-                    cart[index].quantity++;
-                    localStorage.setItem('quantixgearCart', JSON.stringify(cart));
-                    renderCart();
-                }
-                
-                if (e.target.classList.contains('remove-btn')) {
-                    const index = e.target.getAttribute('data-index');
-                    cart.splice(index, 1);
-                    localStorage.setItem('quantixgearCart', JSON.stringify(cart));
-                    renderCart();
-                }
-            });
-            
-            // Quantity input handler
-            document.addEventListener('change', function(e) {
-                if (e.target.classList.contains('quantity-input')) {
-                    const index = e.target.getAttribute('data-index');
-                    const newQuantity = parseInt(e.target.value);
-                    
-                    if (!isNaN(newQuantity) && newQuantity > 0) {
-                        cart[index].quantity = newQuantity;
-                        localStorage.setItem('quantixgearCart', JSON.stringify(cart));
-                        renderCart();
-                    } else {
-                        // Reset to previous value if invalid
-                        e.target.value = cart[index].quantity;
-                    }
-                }
-            });
-            
             // Checkout button
             document.getElementById('checkoutBtn').addEventListener('click', function() {
-                if (cart.length === 0) {
-                    alert('Your cart is empty!');
-                    return;
-                }
                 window.location.href = 'checkout.html';
             });
         });

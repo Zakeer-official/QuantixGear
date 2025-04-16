@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Addresses - QuantixGear</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* Shared styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f5f5;
+            color: #333;
+        }
+        
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        header {
+            background-color: #2874f0;
+            color: white;
+            padding: 15px 0;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-size: 24px;
+            font-weight: 600;
+        }
+        
+        .logo a {
+            color: white;
+            text-decoration: none;
+        }
+        
+        .logo i {
+            margin-right: 8px;
+        }
+        
+        .user-actions a {
+            color: white;
+            text-decoration: none;
+            margin-left: 20px;
+            font-size: 14px;
+            font-weight: 500;
+        }
+        
+        .user-actions a i {
+            margin-right: 5px;
+        }
+        
+        footer {
+            background-color: #172337;
+            color: #fff;
+            padding: 30px 0;
+            margin-top: 50px;
+        }
+        
+        /* Addresses Page Styles */
+        .addresses-container {
+            padding: 30px 0;
+        }
+        
+        .page-title {
+            font-size: 24px;
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+        
+        .addresses-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .add-address-btn {
+            background-color: #2874f0;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 3px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+        }
+        
+        .add-address-btn i {
+            margin-right: 8px;
+        }
+        
+        .addresses-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+        }
+        
+        .address-card {
+            background: white;
+            border-radius: 4px;
+            padding: 20px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            position: relative;
+        }
+        
+        .address-default {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background-color: #e5f8ed;
+            color: #388e3c;
+            padding: 3px 8px;
+            border-radius: 3px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+        
+        .address-name {
+            font-weight: 500;
+            margin-bottom: 10px;
+        }
+        
+        .address-details {
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+        
+        .address-phone {
+            margin-top: 5px;
+            color: #2874f0;
+        }
+        
+        .address-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+        
+        .address-action {
+            color: #2874f0;
+            text-decoration: none;
+            font-size: 14px;
+            cursor: pointer;
+        }
+        
+        .empty-addresses {
+            text-align: center;
+            padding: 50px 0;
+            grid-column: 1 / -1;
+        }
+        
+        .empty-addresses i {
+            font-size: 50px;
+            color: #e0e0e0;
+            margin-bottom: 20px;
+        }
+        
+        .empty-addresses h3 {
+            font-size: 18px;
+            margin-bottom: 10px;
+        }
+        
+        @media (max-width: 768px) {
+            .addresses-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .addresses-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container header-container">
+            <div class="logo">
+                <a href="index.html"><i class="fas fa-microchip"></i> QuantixGear</a>
+            </div>
+            <div class="user-actions" id="userActions">
+                <!-- Dynamic content -->
+            </div>
+        </div>
+    </header>
+    
+    <!-- Addresses Content -->
+    <div class="container addresses-container">
+        <div class="addresses-header">
+            <h1 class="page-title">My Addresses</h1>
+            <a href="add-address.html" class="add-address-btn">
+                <i class="fas fa-plus"></i>
+                <span>Add New Address</span>
+            </a>
+        </div>
+        
+        <div class="addresses-grid" id="addressesGrid">
+            <!-- Addresses will be loaded here -->
+        </div>
+    </div>
+    
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>About QuantixGear</h3>
+                    <p>Your one-stop shop for high-tech gadgets and electronics.</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="products.html">Products</a></li>
+                        <li><a href="about.html">About Us</a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Customer Service</h3>
+                    <ul>
+                        <li><a href="faq.html">FAQ</a></li>
+                        <li><a href="returns.html">Returns</a></li>
+                        <li><a href="shipping.html">Shipping</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2023 QuantixGear. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const user = JSON.parse(localStorage.getItem('quantixgearUser'));
+            if (!user) {
+                window.location.href = 'login.html';
+                return;
+            }
+            
+            // Load user addresses
+            const users = JSON.parse(localStorage.getItem('quantixgearUsers')) || [];
+            const currentUser = users.find(u => u.email === user.email);
+            const addresses = currentUser?.addresses || [];
+            const addressesGrid = document.getElementById('addressesGrid');
+            
+            if (addresses.length === 0) {
+                addressesGrid.innerHTML = `
+                    <div class="empty-addresses">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <h3>No Addresses Saved</h3>
+                        <p>You haven't saved any addresses yet.</p>
+                    </div>
+                `;
+            } else {
+                addresses.forEach((address, index) => {
+                    const addressElement = document.createElement('div');
+                    addressElement.className = 'address-card';
+                    
+                    let defaultBadge = '';
+                    if (address.isDefault) {
+                        defaultBadge = '<span class="address-default">DEFAULT</span>';
+                    }
+                    
+                    addressElement.innerHTML = `
+                        ${defaultBadge}
+                        <div class="address-name">${address.firstName} ${address.lastName}</div>
+                        <div class="address-details">
+                            ${address.address1}<br>
+                            ${address.address2 ? address.address2 + '<br>' : ''}
+                            ${address.city}, ${address.state} - ${address.zip}<br>
+                            ${address.country}
+                        </div>
+                        <div class="address-phone">Phone: ${address.phone}</div>
+                        <div class="address-actions">
+                            <a class="address-action" href="edit-address.html?index=${index}">
+                                <i class="fas fa-edit"></i> Edit
+                            </a>
+                            <a class="address-action delete-address" data-index="${index}">
+                                <i class="fas fa-trash"></i> Delete
+                            </a>
+                            ${!address.isDefault ? `<a class="address-action set-default" data-index="${index}">
+                                <i class="fas fa-check-circle"></i> Set as Default
+                            </a>` : ''}
+                        </div>
+                    `;
+                    
+                    addressesGrid.appendChild(addressElement);
+                });
+            }
+            
+            // Handle delete address
+            document.addEventListener('click', function(e) {
+                if (e.target.classList.contains('delete-address') || e.target.parentElement.classList.contains('delete-address')) {
+                    const index = e.target.dataset.index || e.target.parentElement.dataset.index;
+                    if (confirm('Are you sure you want to delete this address?')) {
+                        deleteAddress(index);
+                    }
+                }
+                
+                // Handle set default address
+                if (e.target.classList.contains('set-default') || e.target.parentElement.classList.contains('set-default')) {
+                    const index = e.target.dataset.index || e.target.parentElement.dataset.index;
+                    setDefaultAddress(index);
+                }
+            });
+            
+            function deleteAddress(index) {
+                const users = JSON.parse(localStorage.getItem('quantixgearUsers')) || [];
+                const currentUser = JSON.parse(localStorage.getItem('quantixgearUser'));
+                const userIndex = users.findIndex(u => u.email === currentUser.email);
+                
+                if (userIndex !== -1) {
+                    users[userIndex].addresses.splice(index, 1);
+                    localStorage.setItem('quantixgearUsers', JSON.stringify(users));
+                    window.location.reload();
+                }
+            }
+            
+            function setDefaultAddress(index) {
+                const users = JSON.parse(localStorage.getItem('quantixgearUsers')) || [];
+                const currentUser = JSON.parse(localStorage.getItem('quantixgearUser'));
+                const userIndex = users.findIndex(u => u.email === currentUser.email);
+                
+                if (userIndex !== -1) {
+                    // Remove default from all addresses
+                    users[userIndex].addresses.forEach(addr => {
+                        addr.isDefault = false;
+                    });
+                    
+                    // Set the selected address as default
+                    users[userIndex].addresses[index].isDefault = true;
+                    localStorage.setItem('quantixgearUsers', JSON.stringify(users));
+                    window.location.reload();
+                }
+            }
+            
+            // Update user actions in header
+            updateUserActions();
+        });
+        
+        function updateUserActions() {
+            const user = JSON.parse(localStorage.getItem('quantixgearUser'));
+            const userActions = document.getElementById('userActions');
+            
+            if (user) {
+                userActions.innerHTML = `
+                    <a href="profile.html"><i class="fas fa-user"></i> ${user.name.split(' ')[0]}</a>
+                    <a href="wishlist.html"><i class="fas fa-heart"></i> Wishlist</a>
+                    <a href="cart.html"><i class="fas fa-shopping-cart"></i> Cart</a>
+                    <a href="#" id="logoutBtn"><i class="fas fa-sign-out-alt"></i> Logout</a>
+                `;
+                
+                document.getElementById('logoutBtn').addEventListener('click', function(e) {
+                    e.preventDefault();
+                    localStorage.removeItem('quantixgearUser');
+                    window.location.href = 'login.html';
+                });
+            } else {
+                userActions.innerHTML = `
+                    <a href="login.html"><i class="fas fa-sign-in-alt"></i> Login</a>
+                    <a href="register.html"><i class="fas fa-user-plus"></i> Register</a>
+                `;
+            }
+        }
+    </script>
+</body>
+</html>

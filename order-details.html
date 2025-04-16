@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Details - QuantixGear</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* Shared styles with other pages */
+        
+        /* Order Details Styles */
+        .order-details-container {
+            padding: 30px 0;
+        }
+        
+        .order-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .order-title {
+            font-size: 24px;
+            font-weight: 600;
+        }
+        
+        .order-id {
+            color: #2874f0;
+            font-weight: 500;
+        }
+        
+        .order-date {
+            color: #878787;
+            margin-top: 5px;
+        }
+        
+        .order-status {
+            padding: 6px 12px;
+            border-radius: 3px;
+            font-weight: 500;
+        }
+        
+        .order-content {
+            display: flex;
+            gap: 30px;
+            margin-top: 20px;
+        }
+        
+        .order-items {
+            flex: 2;
+            background: white;
+            border-radius: 4px;
+            padding: 20px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        
+        .order-summary {
+            flex: 1;
+            background: white;
+            border-radius: 4px;
+            padding: 20px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            height: fit-content;
+        }
+        
+        .section-title {
+            font-size: 18px;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        
+        .order-item {
+            display: flex;
+            padding: 15px 0;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        
+        .order-item:last-child {
+            border-bottom: none;
+        }
+        
+        .order-item-img {
+            width: 80px;
+            height: 80px;
+            margin-right: 15px;
+        }
+        
+        .order-item-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+        
+        .order-item-details {
+            flex: 1;
+        }
+        
+        .order-item-title {
+            font-size: 16px;
+            margin-bottom: 5px;
+        }
+        
+        .order-item-price {
+            font-size: 16px;
+            color: #2874f0;
+            font-weight: 500;
+        }
+        
+        .order-summary-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+        
+        .order-summary-total {
+            font-weight: 500;
+            font-size: 16px;
+            margin: 15px 0;
+            padding-top: 15px;
+            border-top: 1px dashed #e0e0e0;
+        }
+        
+        .delivery-address {
+            margin-top: 20px;
+        }
+        
+        .address-details {
+            line-height: 1.6;
+        }
+        
+        .payment-method {
+            margin-top: 20px;
+        }
+        
+        .payment-details {
+            display: flex;
+            align-items: center;
+        }
+        
+        .payment-icon {
+            font-size: 24px;
+            margin-right: 10px;
+        }
+        
+        @media (max-width: 768px) {
+            .order-content {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container header-container">
+            <div class="logo">
+                <a href="index.html"><i class="fas fa-microchip"></i> QuantixGear</a>
+            </div>
+            <div class="user-actions" id="userActions">
+                <!-- Dynamic content -->
+            </div>
+        </div>
+    </header>
+    
+    <!-- Order Details Content -->
+    <div class="container order-details-container">
+        <div class="order-header">
+            <div>
+                <h1 class="order-title">Order Details</h1>
+                <div class="order-id" id="orderId">Order #123456</div>
+                <div class="order-date" id="orderDate">Placed on 12 Jan 2023</div>
+            </div>
+            <div class="order-status" id="orderStatus">Processing</div>
+        </div>
+        
+        <div class="order-content">
+            <div class="order-items">
+                <h3 class="section-title">Order Items</h3>
+                <div id="orderItemsContainer">
+                    <!-- Items will be loaded here -->
+                </div>
+            </div>
+            
+            <div class="order-summary">
+                <h3 class="section-title">Order Summary</h3>
+                <div class="order-summary-row">
+                    <span>Subtotal</span>
+                    <span id="orderSubtotal">₹0</span>
+                </div>
+                <div class="order-summary-row">
+                    <span>Shipping</span>
+                    <span id="orderShipping">FREE</span>
+                </div>
+                <div class="order-summary-total">
+                    <span>Total</span>
+                    <span id="orderTotal">₹0</span>
+                </div>
+                
+                <div class="delivery-address">
+                    <h3 class="section-title">Delivery Address</h3>
+                    <div class="address-details" id="deliveryAddress">
+                        Loading...
+                    </div>
+                </div>
+                
+                <div class="payment-method">
+                    <h3 class="section-title">Payment Method</h3>
+                    <div class="payment-details" id="paymentMethod">
+                        <i class="fas fa-credit-card payment-icon"></i>
+                        <span>Credit Card</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <!-- Same footer as other pages -->
+        </div>
+    </footer>
+    
+    <!-- Include auth.js -->
+    <script src="auth.js"></script>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const user = JSON.parse(localStorage.getItem('quantixgearUser'));
+            if (!user) {
+                window.location.href = 'login.html';
+                return;
+            }
+            
+            const urlParams = new URLSearchParams(window.location.search);
+            const orderId = urlParams.get('id');
+            
+            if (orderId) {
+                const orders = JSON.parse(localStorage.getItem('quantixgearOrders')) || [];
+                const order = orders.find(o => o.id === orderId && o.user === user.email);
+                
+                if (order) {
+                    // Set order header info
+                    document.getElementById('orderId').textContent = `Order #${order.id.split('-')[1]}`;
+                    
+                    const orderDate = new Date(order.date);
+                    document.getElementById('orderDate').textContent = `Placed on ${orderDate.toLocaleDateString('en-US', {
+                        year: 'numeric',
+                        month: 'short',
+                        day: 'numeric'
+                    })}`;
+                    
+                    // Set status
+                    const statusElement = document.getElementById('orderStatus');
+                    statusElement.textContent = order.status.charAt(0).toUpperCase() + order.status.slice(1);
+                    
+                    if (order.status === 'processing') {
+                        statusElement.style.backgroundColor = '#fff4e5';
+                        statusElement.style.color = '#ffa700';
+                    } else if (order.status === 'shipped') {
+                        statusElement.style.backgroundColor = '#e5f8f7';
+                        statusElement.style.color = '#00a79e';
+                    } else if (order.status === 'delivered') {
+                        statusElement.style.backgroundColor = '#e5f8ed';
+                        statusElement.style.color = '#388e3c';
+                    }
+                    
+                    // Set order items
+                    const itemsContainer = document.getElementById('orderItemsContainer');
+                    order.items.forEach(item => {
+                        const itemElement = document.createElement('div');
+                        itemElement.className = 'order-item';
+                        itemElement.innerHTML = `
+                            <div class="order-item-img">
+                                <img src="${item.image}" alt="${item.title}">
+                            </div>
+                            <div class="order-item-details">
+                                <h3 class="order-item-title">${item.title}</h3>
+                                <div class="order-item-price">₹${item.price} x ${item.quantity}</div>
+                            </div>
+                        `;
+                        itemsContainer.appendChild(itemElement);
+                    });
+                    
+                    // Set summary
+                    document.getElementById('orderSubtotal').textContent = `₹${order.total}`;
+                    document.getElementById('orderTotal').textContent = `₹${order.total}`;
+                    
+                    if (order.payment === 'cod') {
+                        document.getElementById('orderShipping').textContent = '₹50 (COD charge)';
+                        document.getElementById('orderTotal').textContent = `₹${order.total + 50}`;
+                    }
+                    
+                    // Set address
+                    const addr = order.address;
+                    document.getElementById('deliveryAddress').innerHTML = `
+                        <p><strong>${addr.firstName} ${addr.lastName}</strong></p>
+                        <p>${addr.address1}</p>
+                        <p>${addr.address2 ? addr.address2 + '<br>' : ''}
+                        ${addr.city}, ${addr.state} - ${addr.zip}</p>
+                        <p>${addr.country}</p>
+                        <p>Phone: ${addr.phone}</p>
+                    `;
+                    
+                    // Set payment method
+                    const paymentElement = document.getElementById('paymentMethod');
+                    if (order.payment === 'cod') {
+                        paymentElement.innerHTML = `
+                            <i class="fas fa-money-bill-wave payment-icon"></i>
+                            <span>Cash on Delivery</span>
+                        `;
+                    } else if (order.payment === 'paypal') {
+                        paymentElement.innerHTML = `
+                            <i class="fab fa-paypal payment-icon"></i>
+                            <span>PayPal</span>
+                        `;
+                    }
+                } else {
+                    window.location.href = 'orders.html';
+                }
+            } else {
+                window.location.href = 'orders.html';
+            }
+        });
+    </script>
+</body>
+</html>
