@@ -288,11 +288,11 @@
     <header>
         <div class="container header-container">
             <div class="logo">
-                <a href="index.html"><i class="fas fa-robot"></i> QuantixGear</a>
+                <a href="index.html"><i class="fas fa-microchip"></i> QuantixGear</a>
             </div>
             <div class="user-actions">
                 <a href="login.html"><i class="fas fa-user"></i> <span>Login</span></a>
-                <a href="cart.html"><i class="fas fa-shopping-cart"></i> <span>Cart</span> <span class="cart-count">3</span></a>
+                <a href="cart.html"><i class="fas fa-shopping-cart"></i> <span>Cart</span> <span class="cart-count">0</span></a>
             </div>
         </div>
     </header>
@@ -384,11 +384,169 @@
                     </div>
                 </div>
                 
-                <div class="product-grid">
-                    <a href="product-detail.html" class="product-card">
-                        <div class="product-image">
-                            <img src="https://robocraze.com/cdn/shop/products/arduino-uno-r3_600x.jpg" alt="Arduino Uno R3">
-                        </div>
-                        <h3 class="product-title">Arduino Uno R3 Development Board with USB Cable</h3>
-                        <div class="product-price">₹450 <span class="product-original-price">₹650</span> <span class="product-discount">31% off</span></div>
-                        <div class="product-rating">4.5 <i class="fas fa-star"></i></div>
+                <div class="product-grid" id="productGrid">
+                    <!-- Products will be dynamically inserted here -->
+                </div>
+                
+                <div class="pagination">
+                    <a href="#">&laquo;</a>
+                    <a href="#" class="active">1</a>
+                    <a href="#">2</a>
+                    <a href="#">3</a>
+                    <a href="#">&raquo;</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <!-- Same footer as index.html -->
+        </div>
+    </footer>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Sample product data (in a real app, this would come from an API)
+            const products = [
+                {
+                    id: '1',
+                    title: 'Arduino Uno R3 Development Board with USB Cable',
+                    price: 450,
+                    originalPrice: 650,
+                    discount: 31,
+                    image: 'https://robocraze.com/cdn/shop/products/arduino-uno-r3_600x.jpg',
+                    rating: 4.5,
+                    ratingCount: 12345,
+                    category: 'uno'
+                },
+                {
+                    id: '2',
+                    title: 'Arduino Mega 2560 R3',
+                    price: 1200,
+                    originalPrice: 1500,
+                    discount: 20,
+                    image: 'https://robocraze.com/cdn/shop/products/arduino-mega-2560-r3_600x.jpg',
+                    rating: 4.3,
+                    ratingCount: 8560,
+                    category: 'mega'
+                },
+                {
+                    id: '3',
+                    title: 'Arduino Nano with USB Cable',
+                    price: 350,
+                    originalPrice: 500,
+                    discount: 30,
+                    image: 'https://robocraze.com/cdn/shop/products/arduino-nano-with-usb-cable_600x.jpg',
+                    rating: 4.2,
+                    ratingCount: 5678,
+                    category: 'nano'
+                },
+                {
+                    id: '4',
+                    title: 'Arduino Starter Kit with Uno R3',
+                    price: 2500,
+                    originalPrice: 3500,
+                    discount: 29,
+                    image: 'https://robocraze.com/cdn/shop/products/arduino-starter-kit-with-uno-r3_600x.jpg',
+                    rating: 4.7,
+                    ratingCount: 2345,
+                    category: 'kits'
+                },
+                {
+                    id: '5',
+                    title: 'L293D Motor Driver Shield for Arduino',
+                    price: 280,
+                    originalPrice: 400,
+                    discount: 30,
+                    image: 'https://robocraze.com/cdn/shop/products/l293d-motor-driver-shield_600x.jpg',
+                    rating: 4.3,
+                    ratingCount: 3245,
+                    category: 'shields'
+                },
+                {
+                    id: '6',
+                    title: 'Arduino Ethernet Shield',
+                    price: 1800,
+                    originalPrice: 2200,
+                    discount: 18,
+                    image: 'https://robocraze.com/cdn/shop/products/arduino-ethernet-shield_600x.jpg',
+                    rating: 4.1,
+                    ratingCount: 1234,
+                    category: 'shields'
+                }
+            ];
+            
+            // Display products
+            const productGrid = document.getElementById('productGrid');
+            
+            products.forEach(product => {
+                const productElement = document.createElement('a');
+                productElement.className = 'product-card';
+                productElement.href = `product-detail.html?id=${product.id}`;
+                productElement.innerHTML = `
+                    <div class="product-image">
+                        <img src="${product.image}" alt="${product.title}">
+                    </div>
+                    <h3 class="product-title">${product.title}</h3>
+                    <div class="product-price">₹${product.price} <span class="product-original-price">₹${product.originalPrice}</span> <span class="product-discount">${product.discount}% off</span></div>
+                    <div class="product-rating">${product.rating} <i class="fas fa-star"></i></div>
+                    <button class="add-to-cart" data-id="${product.id}">Add to Cart</button>
+                `;
+                productGrid.appendChild(productElement);
+            });
+            
+            // Add to cart functionality
+            document.addEventListener('click', function(e) {
+                if (e.target.classList.contains('add-to-cart')) {
+                    e.preventDefault();
+                    const productId = e.target.getAttribute('data-id');
+                    const product = products.find(p => p.id === productId);
+                    
+                    // Get or initialize cart
+                    let cart = JSON.parse(localStorage.getItem('quantixgearCart')) || [];
+                    
+                    // Check if product already in cart
+                    const existingItemIndex = cart.findIndex(item => item.id === product.id);
+                    
+                    if (existingItemIndex >= 0) {
+                        // Increment quantity if already in cart
+                        cart[existingItemIndex].quantity++;
+                    } else {
+                        // Add new item to cart
+                        cart.push({
+                            id: product.id,
+                            title: product.title,
+                            price: product.price,
+                            originalPrice: product.originalPrice,
+                            discount: product.discount,
+                            image: product.image,
+                            quantity: 1
+                        });
+                    }
+                    
+                    // Save cart
+                    localStorage.setItem('quantixgearCart', JSON.stringify(cart));
+                    
+                    // Update cart count
+                    const cartCount = cart.reduce((total, item) => total + item.quantity, 0);
+                    document.querySelector('.cart-count').textContent = cartCount;
+                    document.querySelector('.cart-count').style.display = 'flex';
+                    
+                    // Show feedback
+                    alert(`${product.title} added to cart!`);
+                }
+            });
+            
+            // Initialize cart count
+            const cart = JSON.parse(localStorage.getItem('quantixgearCart')) || [];
+            const cartCount = cart.reduce((total, item) => total + item.quantity, 0);
+            if (cartCount > 0) {
+                document.querySelector('.cart-count').textContent = cartCount;
+                document.querySelector('.cart-count').style.display = 'flex';
+            }
+        });
+    </script>
+</body>
+</html>
